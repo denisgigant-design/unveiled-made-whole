@@ -1,124 +1,127 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#153b4b">
-  <meta name="description" content="A gentle, interactive Bible game about body, soul and spirit. Explore everyday examples, discover Scripture and grow in understanding.">
-  <title>Made Whole — Body, Soul & Spirit | Unveiled</title>
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css">
-  <script type="module" src="game.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#080b0e">
+  <meta name="description" content="A cinematic 3D car detailing experience. Discover exterior wash, interior care, paint finishing and vehicle valeting services in Dublin.">
+  <title>DUBLIN DETAIL — The Art of a Perfect Finish</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Italiana&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+  <script type="importmap">
+    {"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}
+  </script>
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to the game</a>
+  <div class="page-track" id="track" aria-hidden="true"></div>
+  <div id="stage" class="stage">
+    <canvas id="webgl" aria-label="Interactive three-dimensional sports car and detailing equipment"></canvas>
+    <div class="fallback-art" aria-hidden="true"><div class="fallback-halo"></div><span>CRAFTED<br>TO SHINE.</span></div>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="edge-shade" aria-hidden="true"></div>
+    <div class="load-state" id="loadState" role="status" aria-live="polite">
+      <div class="load-mark">D<span>·</span>D</div>
+      <div class="load-track"><div id="loadFill"></div></div>
+      <span id="loadLabel">Preparing the studio</span>
+    </div>
+  </div>
+
   <header class="site-header">
-    <a class="brand" href="./" aria-label="Unveiled, Made Whole home">
-      <svg class="brand-mark" width="30" height="34" viewBox="0 0 30 34" fill="none" aria-hidden="true"><path d="M3 3h10L9 15l5 6-4 10H3V3Zm24 0H17l4 12-5 6 4 10h7V3Z" fill="currentColor"/></svg>
-      <span>UNVEILED<span class="brand-sub">PLAY. DISCOVER. GROW.</span></span>
-    </a>
-    <nav aria-label="Main navigation">
-      <button class="text-button" data-open="study-dialog">Study notes <span aria-hidden="true">↗</span></button>
-      <button class="help-button" data-open="help-dialog" aria-label="How to play">?</button>
+    <a class="brand" href="#top" id="brandLink" aria-label="Dublin Detail, back to top"><span class="brand-glyph">D<span>·</span>D</span><span class="brand-wordmark">DUBLIN <strong>DETAIL</strong><small>CAR CARE STUDIO</small></span></a>
+    <nav class="desktop-nav" aria-label="Explore the experience">
+      <button type="button" data-jump="0">Studio</button><span class="nav-separator"></span>
+      <button type="button" data-jump="0.25">Wash</button><span class="nav-separator"></span>
+      <button type="button" data-jump="0.49">Interior</button><span class="nav-separator"></span>
+      <button type="button" data-jump="0.71">Finish</button>
     </nav>
+    <button type="button" class="header-cta" id="headerCta">EXPLORE SERVICES <span aria-hidden="true">↗</span></button>
   </header>
 
-  <main id="main" class="page-wrap">
-    <section class="intro" aria-labelledby="page-title">
-      <div class="intro-copy">
-        <p class="eyebrow"><span class="tiny-star" aria-hidden="true">✧</span> A LITTLE GAME. A DEEPER UNDERSTANDING.</p>
-        <h1 id="page-title">Made <em>whole.</em></h1>
-        <p class="intro-description">One person. Body, soul and spirit.<br>Discover the difference, one moment at a time.</p>
-      </div>
-      <figure class="opening-verse">
-        <span class="quote-mark" aria-hidden="true">“</span>
-        <blockquote>…your whole spirit and soul and body be preserved blameless…</blockquote>
-        <figcaption><button class="verse-link" data-verse="whole">1 Thessalonians 5:23 <span class="kjv">KJV</span> <span aria-hidden="true">↗</span></button></figcaption>
-      </figure>
+  <div class="chapter-index" aria-hidden="true"><span id="chapterNumber">01</span><div class="index-line"></div><span>05</span></div>
+  <div class="side-label" aria-hidden="true">A DIFFERENT KIND OF DETAILING EXPERIENCE <span class="label-cross">✳</span> DUBLIN, IRELAND</div>
+
+  <main class="experience" id="top">
+    <section class="chapter is-active" data-chapter="0" aria-labelledby="title0">
+      <p class="eyebrow"><span class="eyebrow-line"></span> INTRODUCING DUBLIN DETAIL <span class="eyebrow-id">01 / 05</span></p>
+      <h1 id="title0">THE ART<br>OF <em>ARRIVING</em><br>FLAWLESS.</h1>
+      <p class="chapter-description">Every curve, every reflection, every detail. An uncompromising approach to the way your car looks and feels.</p>
+      <div class="chapter-extra"><span class="vertical-rule"></span><span>PREMIUM CAR CARE<br>REIMAGINED IN 3D</span></div>
     </section>
-
-    <div class="experience-layout">
-      <section class="game-shell" aria-labelledby="game-heading">
-        <div class="game-topline">
-          <div class="game-label"><span class="status-dot" aria-hidden="true"></span><span id="mode-label">DISCOVERY ROUND</span></div>
-          <span id="question-counter">12 everyday moments</span>
-        </div>
-        <div class="progress-track" role="progressbar" aria-label="Round progress" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0"><div id="progress-fill"></div></div>
-
-        <div id="welcome-screen" class="welcome-screen">
-          <div class="welcome-art" aria-hidden="true">
-            <svg viewBox="0 0 320 188" fill="none"><path d="M25 149H295" stroke="#d6ddd9" stroke-dasharray="3 6"/><circle cx="160" cy="86" r="69" fill="#e8f0ec"/><circle cx="160" cy="86" r="49" fill="#f2e8d6"/><circle cx="160" cy="86" r="28" fill="#bfcfdf"/><path d="M160 71v30M145 86h30" stroke="#244f6b" stroke-width="2.5" stroke-linecap="round"/><circle cx="160" cy="86" r="77" stroke="#dde5e0" stroke-dasharray="2 6"/><path d="M67 36v12m-6-6h12M254 104v12m-6-6h12" stroke="#b5bda5" stroke-width="1.5"/><path d="m244 36 3 8 8 3-8 3-3 8-3-8-8-3 8-3Z" fill="#c7a66b"/><path d="M104 149h112M128 157h64" stroke="#ccd6ce" stroke-linecap="round"/></svg>
-            <span class="art-label art-label-body">BODY</span><span class="art-label art-label-soul">SOUL</span><span class="art-label art-label-spirit">SPIRIT</span>
-          </div>
-          <p class="small-label">LET’S PUT IT INTO PRACTICE</p>
-          <h2 id="game-heading">Which part of you is at work?</h2>
-          <p>Read a little moment from life. Choose <strong>body</strong>, <strong>soul</strong> or <strong>spirit</strong>, then discover the lesson behind it.</p>
-          <button class="primary-button" id="start-button">Let’s play <span aria-hidden="true">→</span></button>
-          <div class="welcome-meta"><span><span aria-hidden="true">◷</span> About 3 minutes</span><span><span aria-hidden="true">♡</span> Learn at your own pace</span></div>
-        </div>
-
-        <div id="play-screen" class="play-screen" hidden>
-          <div class="question-meta"><span class="small-label" id="moment-label">A MOMENT FROM LIFE</span><span class="score-pill"><span aria-hidden="true">✧</span> <span id="score">0</span> points</span></div>
-          <div class="question-content">
-            <span id="question-symbol" class="question-symbol" aria-hidden="true"></span>
-            <h2 id="question-title" tabindex="-1"></h2>
-            <p id="question-prompt"></p>
-          </div>
-          <p class="choose-label" id="answer-prompt">Which part is being highlighted?</p>
-          <div id="answer-options" class="answer-options" role="group" aria-labelledby="answer-prompt">
-            <button class="answer-button body-answer" data-answer="body"><span class="answer-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="2.5"/><path d="M8 21v-7H6l1-5h10l1 5h-2v7M12 14v7"/></svg></span><span class="answer-name">Body</span><span class="answer-descriptor">Physical life</span><kbd>1</kbd><span class="answer-check" aria-hidden="true"></span></button>
-            <button class="answer-button soul-answer" data-answer="soul"><span class="answer-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 21S3 16 3 9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 7-9 12-9 12Z"/></svg></span><span class="answer-name">Soul</span><span class="answer-descriptor">Mind, feelings & will</span><kbd>2</kbd><span class="answer-check" aria-hidden="true"></span></button>
-            <button class="answer-button spirit-answer" data-answer="spirit"><span class="answer-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5L12 2Z"/></svg></span><span class="answer-name">Spirit</span><span class="answer-descriptor">Life toward God</span><kbd>3</kbd><span class="answer-check" aria-hidden="true"></span></button>
-          </div>
-          <div id="feedback" class="feedback" aria-live="polite" aria-atomic="true" hidden>
-            <div class="feedback-heading"><span id="feedback-icon" aria-hidden="true">✓</span><h3 id="feedback-title"></h3></div>
-            <p id="feedback-text"></p>
-            <button id="feedback-verse" class="verse-link"></button>
-          </div>
-          <div class="round-bottom"><button class="text-button hint-button" id="hint-button" aria-expanded="false" aria-controls="hint-text"><span aria-hidden="true">☼</span> A little hint</button><button class="primary-button next-button" id="next-button" hidden>Next moment <span aria-hidden="true">→</span></button></div>
-          <p id="hint-text" class="hint-text" role="status" hidden></p>
-        </div>
-
-        <div id="results-screen" class="results-screen" hidden>
-          <div class="result-emblem" aria-hidden="true">✧</div>
-          <p class="small-label">ROUND COMPLETE</p>
-          <h2 id="results-heading" tabindex="-1">A little more understanding.</h2>
-          <p id="results-message"></p>
-          <div class="final-score"><span id="final-score">12</span><span id="final-total">/ 12</span></div>
-          <p class="score-caption">moments recognised</p>
-          <div id="category-results" class="category-results"></div>
-          <p class="result-takeaway">Your body expresses. Your soul thinks, feels and chooses. Your spirit relates to God. Together, one whole person.</p>
-          <div class="result-actions"><button class="primary-button" id="replay-button">Play again <span aria-hidden="true">↻</span></button><button class="secondary-button" id="practice-button" hidden>Practise missed moments</button></div>
-          <button class="text-button result-study" data-open="study-dialog">Take a closer look at the Scriptures <span aria-hidden="true">↗</span></button>
-          <p id="best-score" class="best-score"></p>
-        </div>
-      </section>
-
-      <aside class="field-guide" aria-labelledby="guide-heading">
-        <div class="guide-heading"><h2 id="guide-heading">Your little field guide</h2><span aria-hidden="true">↙</span></div>
-        <p class="guide-intro">Three aspects. One whole you.<br> Keep these close while you play.</p>
-        <button class="guide-card body-card" data-guide="body" aria-label="Learn about the body">
-          <span class="guide-number">01</span><div class="guide-card-copy"><h3>Body</h3><p>Your physical life.</p><span>Senses · movement · physical needs</span></div><span class="guide-arrow" aria-hidden="true">↗</span>
-        </button>
-        <button class="guide-card soul-card" data-guide="soul" aria-label="Learn about the soul">
-          <span class="guide-number">02</span><div class="guide-card-copy"><h3>Soul</h3><p>Your inner experience.</p><span>Thoughts · feelings · choices</span></div><span class="guide-arrow" aria-hidden="true">↗</span>
-        </button>
-        <button class="guide-card spirit-card" data-guide="spirit" aria-label="Learn about the spirit">
-          <span class="guide-number">03</span><div class="guide-card-copy"><h3>Spirit</h3><p>Your life toward God.</p><span>New birth · worship · fellowship</span></div><span class="guide-arrow" aria-hidden="true">↗</span>
-        </button>
-        <div class="guide-note"><span aria-hidden="true">✳</span><p>A moment can involve all three. Choose the aspect the question <em>highlights</em>.</p></div>
-      </aside>
-    </div>
-
-    <section class="closing-note" aria-labelledby="closing-heading"><div><span class="small-label">MORE THAN A SCORE</span><h2 id="closing-heading">Understanding is just the beginning.</h2></div><p>Let God’s Word renew your thinking, guide your choices and find expression in the way you live.</p><button class="verse-link" data-verse="renew">Explore Romans 12:2 <span aria-hidden="true">↗</span></button></section>
+    <section class="chapter" data-chapter="1" aria-labelledby="title1">
+      <p class="eyebrow"><span class="eyebrow-line"></span> 01 — EXTERIOR CARE <span class="eyebrow-id">02 / 05</span></p>
+      <h2 id="title1">WATER.<br>LIGHT.<br><em>RENEWAL.</em></h2>
+      <p class="chapter-description">A meticulous exterior wash. Water travels over each sculpted line as the finish comes back to life.</p>
+      <div class="micro-tag">INTERACTIVE 3D WATER SPRAY <span>↗</span></div>
+    </section>
+    <section class="chapter" data-chapter="2" aria-labelledby="title2">
+      <p class="eyebrow"><span class="eyebrow-line"></span> 02 — INTERIOR CARE <span class="eyebrow-id">03 / 05</span></p>
+      <h2 id="title2">BEYOND<br>WHAT YOU<br><em>CAN SEE.</em></h2>
+      <p class="chapter-description">Interior attention is the part you feel. From fine dust to the spaces most people never notice.</p>
+      <div class="micro-tag">SEE THE REAL 3D VACUUM <span>↗</span></div>
+    </section>
+    <section class="chapter" data-chapter="3" aria-labelledby="title3">
+      <p class="eyebrow"><span class="eyebrow-line"></span> 03 — FINISHING TOUCHES <span class="eyebrow-id">04 / 05</span></p>
+      <h2 id="title3">CHASE THE<br>PERFECT<br><em>REFLECTION.</em></h2>
+      <p class="chapter-description">Beautiful paintwork is all about the light. Change the body colour and watch the reflections transform.</p>
+      <div class="color-palette" id="paintPalette" aria-label="Change the car paint colour">
+        <button class="paint-swatch is-selected" data-color="obsidian" aria-label="Obsidian paint" title="Obsidian"><span></span></button>
+        <button class="paint-swatch" data-color="silver" aria-label="Liquid silver paint" title="Liquid silver"><span></span></button>
+        <button class="paint-swatch" data-color="copper" aria-label="Copper paint" title="Copper"><span></span></button>
+        <span class="swatch-caption" id="swatchCaption">OBSIDIAN</span>
+      </div>
+    </section>
+    <section class="chapter chapter-final" data-chapter="4" aria-labelledby="title4">
+      <p class="eyebrow"><span class="eyebrow-line"></span> MAKE IT YOURS <span class="eyebrow-id">05 / 05</span></p>
+      <h2 id="title4">CHOOSE<br>YOUR <em>FINISH.</em></h2>
+      <p class="chapter-description">From a quick refresh to a complete transformation. Choose a service to see what's included.</p>
+      <div class="final-hint"><span class="pulse-dot"></span> SELECT A SERVICE TO EXPLORE</div>
+    </section>
   </main>
 
-  <footer class="site-footer"><p>UNVEILED <span aria-hidden="true">/</span> A small space to grow.</p><p>Scripture: King James Version <span aria-hidden="true">·</span> <button class="text-button" data-open="about-dialog">About this study</button></p></footer>
+  <div class="hotspot-layer" id="hotspotLayer" aria-label="Explore details of the vehicle">
+    <button type="button" class="world-pin" id="pinWash" data-pin="wash"><span class="pin-dot"></span><span class="pin-label">EXTERIOR WASH <b>↗</b></span></button>
+    <button type="button" class="world-pin" id="pinVacuum" data-pin="vacuum"><span class="pin-dot"></span><span class="pin-label">INTERIOR DETAIL <b>↗</b></span></button>
+    <button type="button" class="world-pin" id="pinPolish" data-pin="polish"><span class="pin-dot"></span><span class="pin-label">PAINT FINISH <b>↗</b></span></button>
+  </div>
 
-  <dialog id="study-dialog" class="study-dialog" aria-labelledby="study-title"><div class="dialog-header"><div><p class="small-label">OPEN THE WORD</p><h2 id="study-title">Body, soul & spirit.</h2></div><button class="dialog-close" aria-label="Close study notes" data-close>×</button></div><p class="dialog-intro">Start with the whole person, then explore each aspect.</p><div class="study-tabs" role="tablist" aria-label="Study topic"><button role="tab" id="tab-whole" aria-selected="true" aria-controls="study-panel" data-topic="whole">The whole you</button><button role="tab" id="tab-body" aria-selected="false" aria-controls="study-panel" data-topic="body" tabindex="-1">Body</button><button role="tab" id="tab-soul" aria-selected="false" aria-controls="study-panel" data-topic="soul" tabindex="-1">Soul</button><button role="tab" id="tab-spirit" aria-selected="false" aria-controls="study-panel" data-topic="spirit" tabindex="-1">Spirit</button></div><div id="study-panel" role="tabpanel" aria-labelledby="tab-whole" tabindex="0"></div><p class="study-footnote">The categories are a simple teaching model. Biblical uses of “soul” and “spirit” sometimes overlap; the examples highlight distinctions without separating you into three people.</p></dialog>
-  <dialog id="verse-dialog" class="verse-dialog" aria-labelledby="verse-title"><div class="dialog-header"><p class="small-label">SCRIPTURE · KING JAMES VERSION</p><button class="dialog-close" aria-label="Close Scripture" data-close>×</button></div><h2 id="verse-title"></h2><blockquote id="verse-text"></blockquote><a id="verse-external" class="verse-link" target="_blank" rel="noopener noreferrer">Read in context on Bible Gateway <span aria-hidden="true">↗</span></a></dialog>
-  <dialog id="help-dialog" class="help-dialog" aria-labelledby="help-title"><div class="dialog-header"><h2 id="help-title">A little guide to playing.</h2><button class="dialog-close" aria-label="Close instructions" data-close>×</button></div><ol class="help-steps"><li><strong>Read the moment.</strong><p>Notice the particular action or experience being highlighted.</p></li><li><strong>Make your choice.</strong><p>Tap Body, Soul or Spirit. On a keyboard, you can also press 1, 2 or 3.</p></li><li><strong>Discover the lesson.</strong><p>Each answer brings an explanation and a Bible verse. Choose Next moment when you’re ready.</p></li></ol><p class="help-note">One point for each correct answer. No timer, no pressure. At the end, you can practise any moments you missed.</p></dialog>
-  <dialog id="about-dialog" class="about-dialog" aria-labelledby="about-title"><div class="dialog-header"><h2 id="about-title">A simple Bible study.</h2><button class="dialog-close" aria-label="Close about this study" data-close>×</button></div><p>Made Whole explores body, soul and spirit using a Christian teaching model, anchored in 1 Thessalonians 5:23. Body refers to physical life; soul highlights thoughts, emotions and will; spirit highlights spiritual life and relationship with God.</p><p>The Bible sometimes uses “soul” and “spirit” in overlapping ways, and Christians understand these distinctions differently. The game’s labels are learning aids. They are not a claim that every verse gives a rigid definition.</p><p>Scripture quotations are from the King James Version. Explanations and everyday examples are study commentary, not quotations.</p><p>Your best full-round score is saved in this browser when browser storage is available. There are no accounts, analytics or leaderboards. Bible Gateway opens only when you choose an external Scripture link.</p></dialog>
+  <div class="services" id="services" aria-label="Detailing services">
+    <button type="button" class="service-item" data-service="mini"><span class="service-index">01</span><span class="service-copy"><strong>Mini Valet</strong><small>THE ESSENTIAL REFRESH</small></span><span class="service-price">€90</span><span class="service-arrow">↗</span></button>
+    <button type="button" class="service-item" data-service="full"><span class="service-index">02</span><span class="service-copy"><strong>Full Valet</strong><small>THE COMPLETE EXPERIENCE</small></span><span class="service-price">€150</span><span class="service-arrow">↗</span></button>
+    <button type="button" class="service-item" data-service="extras"><span class="service-index">03</span><span class="service-copy"><strong>Finishing Extras</strong><small>RESTORATION &amp; POLISH</small></span><span class="service-price service-on-request">ASK US</span><span class="service-arrow">↗</span></button>
+  </div>
+
+  <div class="footer-ui" aria-label="Scroll progress">
+    <div class="scroll-hint" id="scrollHint"><div class="mouse-icon"><div></div></div><span>SCROLL TO EXPLORE</span></div>
+    <div class="timeline" id="timeline"><div class="timeline-progress" id="timelineProgress"></div><div class="timeline-marks"><button data-jump="0" class="is-current" aria-label="Go to introduction"></button><button data-jump="0.25" aria-label="Go to exterior wash"></button><button data-jump="0.49" aria-label="Go to interior detail"></button><button data-jump="0.71" aria-label="Go to finishing touches"></button><button data-jump="0.94" aria-label="Go to services"></button></div></div>
+    <div class="scroll-count"><span id="percentage">000</span><span class="percent-symbol">%</span></div>
+  </div>
+
+  <div class="service-backdrop" id="drawerBackdrop" hidden></div>
+  <aside class="service-drawer" id="serviceDrawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" aria-hidden="true">
+    <div class="drawer-top"><span class="drawer-kicker">DUBLIN DETAIL — SERVICE NOTES</span><button type="button" id="closeDrawer" class="close-drawer" aria-label="Close service details">×</button></div>
+    <div class="drawer-number" id="drawerNumber">01 / 03</div>
+    <h2 id="drawerTitle">Mini Valet</h2><p class="drawer-subtitle" id="drawerSubtitle">A considered refresh.</p>
+    <div class="drawer-price" id="drawerPrice">€90</div>
+    <div class="drawer-divider"></div>
+    <p class="inclusions-label">ILLUSTRATIVE SERVICE INCLUSIONS</p><ul class="drawer-list" id="drawerList"></ul>
+    <p class="drawer-note">Service inclusions are examples to confirm with the business. This is a demo site; no booking or payment is processed.</p>
+    <button type="button" class="select-service" id="copySelection">COPY ENQUIRY DETAILS <span aria-hidden="true">↗</span></button><p class="copied-label" id="copiedLabel" role="status"></p>
+  </aside>
+  <div class="noscript-banner"><noscript>Enable JavaScript to explore the interactive 3D studio and services.</noscript></div>
+
+  <script type="module" src="./script.js"></script>
+  <!-- If the remote Three.js module cannot load, do not trap visitors on the loading overlay. -->
+  <script>
+    window.setTimeout(function () {
+      var el = document.getElementById('loadState');
+      if (el && !el.classList.contains('is-done')) {
+        var label = document.getElementById('loadLabel');
+        if (label) label.textContent = '3D loading unavailable — check internet connection';
+        el.classList.add('is-done');
+      }
+    }, 18000);
+  </script>
 </body>
 </html>
-
